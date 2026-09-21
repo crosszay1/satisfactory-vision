@@ -1,0 +1,10 @@
+import math
+import random
+import numpy as np
+
+def add_gaussian_noise(sigma, mean, image):
+    """
+    Sigma: Average value of the Gausian nosise, if graphed, it is the vertex
+    Mean: Deviation from the sigma
+    Image: Image to add noise to
+    """
