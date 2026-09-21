@@ -228,6 +228,12 @@ def main() -> int:
             print(f"[{index}/{len(pending)}] FAIL {rel}: {exc}", file=sys.stderr)
             continue
 
+        rel_parts = path.relative_to(data_dir).parts
+        if "satisfactory" in rel_parts:
+            description = f"gmstyle {description}"
+        elif "real_world" in rel_parts:
+            description = f"rwstyle {description}"
+
         by_filename[rel] = {
             "filename": rel,
             "source": source,
