@@ -7,7 +7,9 @@ authors = [
     { name = "Isaiah Freundlich", email = "isaiahbfreundlich@gmail.com" }
 ]
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "pillow>=12.3.0",
+]
 
 [project.scripts]
 satisfactory-vision = "satisfactory_vision:main"
