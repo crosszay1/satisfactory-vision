@@ -1,0 +1,35 @@
+{
+  "name": "Universal Dev Container",
+
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12",
+    },
+      "ghcr.io/va-h/devcontainers-features/uv:1": {}
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "PKief.material-icon-theme",
+        "charliermarsh.ruff",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.debugpy",
+        "eamodio.gitlens",
+        "usernamehw.errorlens",
+        "streetsidesoftware.code-spell-checker"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "python.analysis.typeCheckingMode": "basic"
+      }
+    }
+  },
+
+  "remoteUser": "vscode",
+  
+  "postCreateCommand": "bash .devcontainer/setup.sh"
+}
