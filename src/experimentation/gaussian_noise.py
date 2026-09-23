@@ -11,7 +11,7 @@ def add_gaussian_noise(sigma, mean, image_path):
     Image: Image to add noise to
     """
     image = cv2.imread(image_path)
-    if not image:
+    if image is None:
         raise ValueError("Image not found")
 
     height, width, channels = image.shape  # Get shape
