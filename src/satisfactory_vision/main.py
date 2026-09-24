@@ -33,7 +33,7 @@ for img in imgs:
     img = cv2.imread(img)
     satis_img = satisfactory_to_rl(img)
     satis_img_noisy = add_gaussian_noise(img)
-    rl_img = rl_to_satisfactory(img)
+    rl_img = rl_to_satisfactory(satis_img_noisy)
 
     # If they differ too much, SMITE them
     mse = calculate_mean_squared_error(satis_img, rl_img) #MSE = mean squared error
@@ -48,13 +48,14 @@ for img in imgs:
     discrim_output_int = discriminator(img)
     discrim_output_bool = True if discrim_output >= 0.5 else False
 
-    if discrim_output_bool == False && imageWasSatisfactory(): # See if discriminator was right
+    imgIsReal = imageWasSatisfactory() # This is a function that checks if the image was satisfactory or not
+    if discrim_output_bool == False && imgIsReal: # See if discriminator was right
         # If image was satisfactory, and discrim correctly identified reward generator, punish discrim
-    elif discrim_output_bool == True && not imageWasSatisfactory(): # See if discriminator was right
+    elif discrim_output_bool == True && not imgIsReal: # See if discriminator was right
         # If image was not satisfactory, but discrim incorrectly identified it as satisfactory, punish discrim
-    elif discrim_output_bool == True && imageWasSatisfactory(): # See if discriminator was right
+    elif discrim_output_bool == True && imgIsReal: # See if discriminator was right
         # If image was satisfactory, and discrim correctly identified reward generator, reward discrim, punish gen
-    elif discrim_output_bool == False && not imageWasSatisfactory(): # See if discriminator was right
+    elif discrim_output_bool == False && not imgIsReal: # See if discriminator was right
         # If image was not satisfactory, and discrim correctly identified it as not satisfactory, reward discrim, punish gen
 
 
