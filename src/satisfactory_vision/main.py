@@ -13,7 +13,7 @@ def add_gaussian_noise(img, sigma=25/255, mean=0.0, rng=None):
 Alright, let's try GAN
 """
 
-def discriminator(img): -> int
+def discriminator(img) -> int:
     pass
 
 def satisfactory_to_rl(img): # Outputs image
