@@ -42,12 +42,12 @@ class vae(nn.Module):
         pass
     class Encoder(nn.Module):
         def __init__(self, latent_dim=2): # two dimensional latent space. output will be a 2d tensor
-        """
-        latent_dim: # of dimensions in the latent space
-        """
+            """
+            latent_dim: # of dimensions in the latent space
+            """
             pass
-        super().__init__()
+            super().__init__()
 
 
 def main():
-    print(add_gaussian_noise(sigma=25, mean=25, image_path="src/experimentation/rainbow.jpg"))  # Example usage
+    print(add_gaussian_noise(sigma=25, mean=25, image_path="src/experimentation/rainbow.jpg"))  

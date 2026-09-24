@@ -36,8 +36,12 @@ def add_gaussian_noise(sigma, mean, image_path):
     return noisy_image_clipped_u8
 
 
-if __name__ == "__main__":
+def main():
     noisy_img = add_gaussian_noise(
         sigma=30, mean=10, image_path="src/experimentation/rainbow.jpg"
     )
     cv2.imwrite("src/experimentation/rainbow_noisy.jpg", noisy_img)
+
+
+if __name__ == "__main__":
+    main()
