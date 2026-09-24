@@ -41,5 +41,5 @@ class vae(nn.Module):
     def __init__(self):
         pass
     class Encoder(nn.Module):
-        def __init__(self, latent_dim=2) # two dimensional latent space. output will be a 2d vector
+        def __init__(self, latent_dim=2) # two dimensional latent space. output will be a 2d tensor
         super().__init__()
