@@ -2,6 +2,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as functional
 from pathlib import Path
+import cv2
+import numpy as np
 
 def load_image(image_path) -> torch.Tensor:
     """
@@ -9,7 +11,7 @@ def load_image(image_path) -> torch.Tensor:
     """
     image = cv2.imread(image_path)
     if image is None:
-        raise ValueError("Image not found")
+        raise ValueError(f"Unable to read image: {image_path}")
     
     # Convert BGR to RGB
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -30,7 +32,12 @@ def get_image_paths(directory: str) -> list[Path]:
     """
     folder = Path(directory)
 
-    file_array = [str(file) for file in folder.rglob("*") if file.is_file()]
+    image_extensions = {".jpg", ".jpeg", ".png", ".bmp", ".webp", ".tif", ".tiff"} # Have to do this because we have lebels.json which will mess stuff up if we try and load it
+    file_array = [
+        str(file)
+        for file in folder.rglob("*")
+        if file.is_file() and file.suffix.lower() in image_extensions
+    ]
 
     return file_array
 class VAE(nn.Module):
@@ -67,4 +74,8 @@ def main():
     for image_path in image_paths:
         # Load the image as a tensor
         tensor = load_image(image_path)
+        print(f"Loaded image tensor from {image_path} with shape {tensor.shape}")
         image_tensors.append(tensor)
+
+if __name__ == "__main__":
+    main()
