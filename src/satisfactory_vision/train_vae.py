@@ -40,7 +40,7 @@ def get_image_paths(directory: str) -> list[Path]:
     ]
 
     return file_array
-def reLu(x):
+def reLu(x): # Won't be used, just for understanding
     """
     Applies the ReLU activation function to the input tensor.
     Input: x - A PyTorch tensor
@@ -49,19 +49,28 @@ def reLu(x):
     output = max(0, x)
     return output
 class VAE(nn.Module):
-    def __init__(self, latent_dim=2): # Two dimensional latent space. output will be a 2d tensor
+    def __init__(self, latent_dim=2, input_dim_placeholder=-999, hidden_dim_placeholder=-999): # Two dimensional latent space. output will be a 2d tensor
         super(VAE, self).__init__()
         self.latent_dim = latent_dim
         self.encoder = self.Encoder(latent_dim)
         self.decoder = self.Decoder(latent_dim)
 
         # Setup layers yada yada
+        # Fc1 = Fully connected layer 1 (Every neuron in the previous layer is connected to every neuron in this layer)
+        self.fc1 = nn.Linear(input_dim_placeholder, hidden_dim_placeholder)
+        self.fc2_mu = nn.Linear(hidden_dim_placeholder, latent_dim)
+        self.fc2_log_var = nn.Linear(hidden_dim_placeholder, latent_dim)
 
     def encode(self, tensor: torch.Tensor) -> mu, log_var:
         """
         Encodes the input tensor into a mean and a log variance.
         """
-        pass
+        h1 = functional.relu(self.fc1(tensor)) # Hidden layer 1 activation = Relu applied to the output of the first hidden layer with tensor as the input
+
+        mu = self.fc2_mu(h1) # Mean of the latent space
+        log_var = self.fc2_log_var(h1) # Log variance of the latent space
+        
+        return mu, log_var
 
         # 
     def decode(self, z: torch.Tensor) -> torch.Tensor:
