@@ -54,9 +54,9 @@ class VAE(nn.Module):
         self.latent_dim = latent_dim
         self.input_dim = input_dim
         self.hidden_dim = hidden_dim
-        
-        self.encoder = self.Encoder(latent_dim)
-        self.decoder = self.Decoder(latent_dim)
+
+        self.encoder = self.encode(latent_dim)
+        self.decoder = self.encode(latent_dim)
 
         # Setup layers yada yada
         # Fc1 = Fully connected layer 1 (Every neuron in the previous layer is connected to every neuron in this layer)
