@@ -111,7 +111,10 @@ class VAE(nn.Module):
         mse_loss = torch.mean(error_squared) # Get mean squared error loss
         return mse_loss
     def forward(self, x):
-        pass
+        mu, log_var = self.encode(x) # Encode the input tensor to get mean and log variance
+        z = self.reparameterize(mu, log_var) # Reparameterize to get latent variable z
+        x_reconstructed = self.decode(z) # Decode z to get reconstructed tensor
+        return x_reconstructed, mu, log_var
 
 
 def main():
