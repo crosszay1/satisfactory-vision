@@ -22,7 +22,7 @@ def load_image(image_path) -> torch.Tensor:
     # Compress to 128x128 pixels
     image = cv2.resize(image, (128, 128))
 
-    # Convert to PyTorch tensor and add batch dimension
+    # Convert to PyTorch tensor
     tensor = torch.from_numpy(image).permute(2, 0, 1)
 
     return tensor
