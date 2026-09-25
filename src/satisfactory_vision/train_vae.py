@@ -40,6 +40,14 @@ def get_image_paths(directory: str) -> list[Path]:
     ]
 
     return file_array
+def reLu(x):
+    """
+    Applies the ReLU activation function to the input tensor.
+    Input: x - A PyTorch tensor
+    Output: 0 if x < 0, else returns back x
+    """
+    output = max(0, x)
+    return output
 class VAE(nn.Module):
     def __init__(self, latent_dim=2): # Two dimensional latent space. output will be a 2d tensor
         super(VAE, self).__init__()
@@ -47,11 +55,15 @@ class VAE(nn.Module):
         self.encoder = self.Encoder(latent_dim)
         self.decoder = self.Decoder(latent_dim)
 
-    def encode(self, tensor: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+        # Setup layers yada yada
+
+    def encode(self, tensor: torch.Tensor) -> mu, log_var:
         """
         Encodes the input tensor into a mean and a log variance.
         """
         pass
+
+        # 
     def decode(self, z: torch.Tensor) -> torch.Tensor:
         """
         Decodes the latent variable z back into the original space.
