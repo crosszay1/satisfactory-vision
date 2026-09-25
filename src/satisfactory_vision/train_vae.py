@@ -49,7 +49,7 @@ def reLu(x): # Won't be used, just for understanding
     output = max(0, x)
     return output
 class VAE(nn.Module):
-    def __init__(self, latent_dim=2, input_dim_placeholder=-999, hidden_dim_placeholder=-999): # Two dimensional latent space. output will be a 2d tensor
+    def __init__(self, latent_dim, input_dim_placeholder, hidden_dim_placeholder): # Two dimensional latent space. output will be a 2d tensor
         super(VAE, self).__init__()
         self.latent_dim = latent_dim
         self.encoder = self.Encoder(latent_dim)
@@ -65,6 +65,8 @@ class VAE(nn.Module):
         """
         Encodes the input tensor into a mean and a log variance.
         """
+        # Flatten to [batch, input_dim]
+        tensor = tensor.reshape(-1, self.fc1.in_features)
         h1 = functional.relu(self.fc1(tensor)) # Hidden layer 1 activation = Relu applied to the output of the first hidden layer with tensor as the input
 
         mu = self.fc2_mu(h1) # Mean of the latent space
@@ -107,6 +109,9 @@ class VAE(nn.Module):
 
 
 def main():
+
+    vae = VAE(latent_dim=2, input_dim=128*128*3, hidden_dim=512) # 128x128 image with 3 channels (RGB)
+
     # Get all images paths
     image_paths = get_image_paths("data")
     print(image_paths)
@@ -117,5 +122,6 @@ def main():
         print(f"Loaded image tensor from {image_path} with shape {tensor.shape}")
         image_tensors.append(tensor)
 
+    
 if __name__ == "__main__":
     main()
