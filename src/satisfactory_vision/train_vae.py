@@ -72,7 +72,20 @@ class VAE(nn.Module):
         
         return mu, log_var
 
-        # 
+    def reparameterize(self, mu, log_var) -> torch.Tensor: # Non-deterministic
+        """"
+        Reparameterization turns mean and log variance into a latent variable z we can then feed to the decoder
+
+        Explanation (Because I'm pretty much commenting all my code for once): (Need rewriting)
+        # Output of the encoder is non-deterministic, meaning that the same input can produce different outputs. 
+        # This bad!
+        # So we rep
+        """
+        standard_deviation = torch.exp(0.5 * log_var) # Get standard deviation from log variance
+        epsillon = torch.randn_like(standard_deviation) # Random noise with the same shape as standard deviation
+        z = mu + epsillon * standard_deviation # Reparameterization trick: z = mu + sigma * epsilon
+        return z
+
     def decode(self, z: torch.Tensor) -> torch.Tensor:
         """
         Decodes the latent variable z back into the original space.
