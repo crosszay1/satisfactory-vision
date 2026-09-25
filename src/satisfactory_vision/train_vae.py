@@ -60,8 +60,14 @@ class VAE(nn.Module):
     def loss_calcualator(self, x: torch.Tensor, x_reconstructed: torch.Tensor) -> torch.Tensor:
         """
         Calculates the loss for the VAE.
+        x: Original input tensor
+        x_reconstructed: Reconstructed tensor from the decoder
+        Outputs: Mean squared error loss as a tensor
         """
-        pass
+        error = x - x_reconstructed
+        error_squared = error ** 2
+        mse_loss = torch.mean(error_squared)
+        return mse_loss
     def forward(self, x):
         pass
 
