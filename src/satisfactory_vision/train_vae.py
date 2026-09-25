@@ -30,7 +30,7 @@ def get_image_paths(directory: str) -> list[Path]:
     """
     folder = Path(directory)
 
-    file_array = [str(file) for file in folder_path.rglob("*") if file.is_file()]
+    file_array = [str(file) for file in folder.rglob("*") if file.is_file()]
 
     return file_array
 class VAE(nn.Module):
