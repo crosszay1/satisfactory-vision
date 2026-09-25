@@ -123,7 +123,7 @@ def main():
     for image_path in image_paths:
         # Load the image as a tensor
         tensor = load_image(image_path)
-        print(f"Loaded image tensor from {image_path} with shape {tensor.shape}")
+        print(f"Loaded image {image_paths.index(image_path) + 1} out of {len(image_paths)} tensors from {image_path} with shape {tensor.shape}")
         image_tensors.append(tensor)
 
     
