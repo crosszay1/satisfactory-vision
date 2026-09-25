@@ -63,6 +63,8 @@ def main():
     # Get all images paths
     image_paths = get_image_paths("data")
     print(image_paths)
-
-if __name__ == "__main__":
-    main()
+    image_tensors = []
+    for image_path in image_paths:
+        # Load the image as a tensor
+        tensor = load_image(image_path)
+        image_tensors.append(tensor)
