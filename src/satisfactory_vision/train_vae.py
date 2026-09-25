@@ -119,7 +119,7 @@ class VAE(nn.Module):
         error_squared = error ** 2 # Square? Why square? Because 1. It makes larger errors a really big deal, and 2. It removes negative values.
         mse_loss = torch.mean(error_squared) # Get mean squared error loss
         # Get kl divergence
-        divergence = self.kullback_leibler_divergence(mu, log_var) # Get kl divergence
+        divergence = self.kullback_leibler_divergence(mu, log_var) / x.numel() # Get kl divergence & normalize so this is on the same scale as the mean-reduced mse_loss above
         # Add kl divergence to mse loss
         mse_loss += divergence
         return mse_loss
@@ -128,6 +128,12 @@ class VAE(nn.Module):
         z = self.reparameterize(mu, log_var) # Reparameterize to get latent variable z
         x_reconstructed = self.decode(z) # Decode z to get reconstructed tensor
         return x_reconstructed, mu, log_var
+    def train_loop()
+        """
+        Acually trains the model. 
+        """
+        x_reconstructed, mu, log_var = self.forward(x) # Forward pass
+        loss = self.loss_calculator(x, x_reconstructed, mu, log_var) # Calculate loss
 
 
 def main():
