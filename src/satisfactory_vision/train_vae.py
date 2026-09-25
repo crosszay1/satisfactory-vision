@@ -49,25 +49,20 @@ def reLu(x): # Won't be used, just for understanding
     output = max(0, x)
     return output
 class VAE(nn.Module):
-    def __init__(self, latent_dim, input_dim, hidden_dim): # Two dimensional latent space. output will be a 2d tensor
+    def __init__(self, latent_dim: int, input_dim: int, hidden_dim: int):
         super(VAE, self).__init__()
         self.latent_dim = latent_dim
         self.input_dim = input_dim
         self.hidden_dim = hidden_dim
 
-        self.encoder = self.encode(latent_dim)
-        self.decoder = self.encode(latent_dim)
-
-        # Setup layers yada yada
-        # Fc1 = Fully connected layer 1 (Every neuron in the previous layer is connected to every neuron in this layer)
-
+        # Encoder layers
         self.fc1 = nn.Linear(input_dim, hidden_dim)
         self.fc2_mu = nn.Linear(hidden_dim, latent_dim)
         self.fc2_log_var = nn.Linear(hidden_dim, latent_dim)
         
-        self.fc3 = nn.Linear(latent_dim, hidden_dim_placeholder)
-        self.fc4 = nn.Linear(hidden_dim_placeholder, input_dim_placeholder)
-        
+        # Decoder layers
+        self.fc3 = nn.Linear(latent_dim, hidden_dim)
+        self.fc4 = nn.Linear(hidden_dim, input_dim)
 
     def encode(self, tensor: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         """
