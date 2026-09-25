@@ -105,7 +105,7 @@ class VAE(nn.Module):
         kl_divergence = -0.5 * torch.sum(1 + log_var - mu.pow(2) - log_var.exp())
         return kl_divergence
 
-    def loss_calcualator(self, x: torch.Tensor, x_reconstructed: torch.Tensor, mu: torch.Tensor, log_var: torch.Tensor) -> torch.Tensor:
+    def loss_calculator(self, x: torch.Tensor, x_reconstructed: torch.Tensor, mu: torch.Tensor, log_var: torch.Tensor) -> torch.Tensor:
         """
         Calculates the loss for the VAE.
         x: Original input tensor
