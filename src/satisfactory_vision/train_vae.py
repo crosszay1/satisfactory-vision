@@ -61,7 +61,7 @@ class VAE(nn.Module):
         self.fc2_mu = nn.Linear(hidden_dim_placeholder, latent_dim)
         self.fc2_log_var = nn.Linear(hidden_dim_placeholder, latent_dim)
 
-    def encode(self, tensor: torch.Tensor) -> mu, log_var:
+    def encode(self, tensor: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         """
         Encodes the input tensor into a mean and a log variance.
         """
