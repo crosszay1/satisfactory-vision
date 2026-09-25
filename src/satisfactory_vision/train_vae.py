@@ -26,7 +26,7 @@ def load_image(image_path) -> torch.Tensor:
     tensor = torch.from_numpy(image).permute(2, 0, 1)
 
     return tensor
-def get_image_paths(directory: str) -> list[Path]:
+def get_image_paths(directory: str) -> list[str]:
     """
     Returns a list of image paths in the given directory.
     """
