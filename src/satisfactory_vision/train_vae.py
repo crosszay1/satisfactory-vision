@@ -66,7 +66,7 @@ class VAE(nn.Module):
         """
         error = x - x_reconstructed
         error_squared = error ** 2
-        mse_loss = torch.mean(error_squared)
+        mse_loss = torch.mean(error_squared) # Square? Why square? Because 1. It makes larger errors a really big deal, and 2. It removes negative values.
         return mse_loss
     def forward(self, x):
         pass
