@@ -64,9 +64,9 @@ class VAE(nn.Module):
         x_reconstructed: Reconstructed tensor from the decoder
         Outputs: Mean squared error loss as a tensor
         """
-        error = x - x_reconstructed
-        error_squared = error ** 2
-        mse_loss = torch.mean(error_squared) # Square? Why square? Because 1. It makes larger errors a really big deal, and 2. It removes negative values.
+        error = x - x_reconstructed # Calculate difference between the two images
+        error_squared = error ** 2 # Square? Why square? Because 1. It makes larger errors a really big deal, and 2. It removes negative values.
+        mse_loss = torch.mean(error_squared) # Get mean squared error loss
         return mse_loss
     def forward(self, x):
         pass
