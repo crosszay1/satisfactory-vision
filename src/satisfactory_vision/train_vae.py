@@ -98,17 +98,30 @@ class VAE(nn.Module):
             h3 = functional.relu(self.fc3(z)) # Pass z through hidden layer
             h4 = functional.sigmoid(self.fc4(h3)) # Pass the output of the hidden layer through the output layer, and run sigmoid to get output in range [0,1]
             return h4
+    def kullback_leibler_divergence(self, mu: torch.Tensor, log_var: torch.Tensor) -> torch.Tensor: # "It's all just math? [insert that meme where the astranaut is looking at the earth and the other astranaut has a gun to the first astranaut's head]
+        """
+        Calculates the Kullback-Leibler divergence between the learned distribution and a standard normal distribution.
+        """
+        kl_divergence = -0.5 * torch.sum(1 + log_var - mu.pow(2) - log_var.exp())
+        return kl_divergence
 
-    def loss_calcualator(self, x: torch.Tensor, x_reconstructed: torch.Tensor) -> torch.Tensor:
+    def loss_calcualator(self, x: torch.Tensor, x_reconstructed: torch.Tensor, mu: torch.Tensor, log_var: torch.Tensor) -> torch.Tensor:
         """
         Calculates the loss for the VAE.
         x: Original input tensor
         x_reconstructed: Reconstructed tensor from the decoder
+        mu: Mean of the latent variable
+        log_var: Log variance of the latent variable
         Outputs: Mean squared error loss as a tensor
         """
+        x = x.reshape(x.size(0), -1) # FLatten x first
         error = x - x_reconstructed # Calculate difference between the two images
         error_squared = error ** 2 # Square? Why square? Because 1. It makes larger errors a really big deal, and 2. It removes negative values.
         mse_loss = torch.mean(error_squared) # Get mean squared error loss
+        # Get kl divergence
+        divergence = self.kullback_leibler_divergence(mu, log_var) # Get kl divergence
+        # Add kl divergence to mse loss
+        mse_loss += divergence
         return mse_loss
     def forward(self, x):
         mu, log_var = self.encode(x) # Encode the input tensor to get mean and log variance
