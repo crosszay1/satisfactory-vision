@@ -128,12 +128,21 @@ class VAE(nn.Module):
         z = self.reparameterize(mu, log_var) # Reparameterize to get latent variable z
         x_reconstructed = self.decode(z) # Decode z to get reconstructed tensor
         return x_reconstructed, mu, log_var
-    def train_loop()
+    def train_step(self, x): # One step of training, will be called in a loop
         """
         Acually trains the model. 
         """
         x_reconstructed, mu, log_var = self.forward(x) # Forward pass
         loss = self.loss_calculator(x, x_reconstructed, mu, log_var) # Calculate loss
+
+        """
+        Call our friend the optimizer to update the weights of the model based on the loss via gradient descent. We'll use pytorch's built in libraries for this, but conseptually the code looks something like:
+        for param in model.parameters():
+            param.data -= learning_rate * param.grad
+
+        We do this so that each weight is moved against the loss, thus reducing the loss, thus making our output as close as possible to the input, which is the whole point.
+        
+        """
 
 
 def main():
