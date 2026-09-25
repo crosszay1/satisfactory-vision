@@ -92,11 +92,13 @@ class VAE(nn.Module):
         return z
 
     def decode(self, z: torch.Tensor) -> torch.Tensor:
-        """
-        Decodes the latent variable z back into the original space.
-        """
+            """
+            Decodes the latent variable z back into the original space.
+            """
+            h3 = functional.relu(self.fc3(z)) # Pass z through hidden layer
+            h4 = functional.sigmoid(self.fc4(h3)) # Pass the output of the hidden layer through the output layer, and run sigmoid to get output in range [0,1]
+            return h4
 
-        pass 
     def loss_calcualator(self, x: torch.Tensor, x_reconstructed: torch.Tensor) -> torch.Tensor:
         """
         Calculates the loss for the VAE.
@@ -125,6 +127,7 @@ def main():
         tensor = load_image(image_path)
         print(f"Loaded image {image_paths.index(image_path) + 1} out of {len(image_paths)} tensors from {image_path} with shape {tensor.shape}")
         image_tensors.append(tensor)
+    print(f"Loaded {len(image_tensors)} tensors from {len(image_paths)} images")
 
     
 if __name__ == "__main__":
