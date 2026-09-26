@@ -122,8 +122,8 @@ class VAE(nn.Module):
         # Get kl divergence
         divergence = self.kullback_leibler_divergence(mu, log_var) / x.numel() # Get kl divergence & normalize so this is on the same scale as the mean-reduced mse_loss above
         # Add kl divergence to mse loss
-        mse_loss += divergence
-        return mse_loss
+        total_loss = mse_loss + divergence # Add the two losses together to get the total loss
+        return total_loss, mse_loss, divergence
     def forward(self, x):
         mu, log_var = self.encode(x) # Encode the input tensor to get mean and log variance
         z = self.reparameterize(mu, log_var) # Reparameterize to get latent variable z
