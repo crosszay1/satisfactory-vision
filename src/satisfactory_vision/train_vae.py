@@ -181,6 +181,17 @@ def main():
             # Calculate the loss
             loss = vae.loss_calculator(x, x_reconstructed, mu, log_var) # Calculate the loss
 
+            # Backpropagation
+            loss.backward() # Backpropagate the loss (calculate the gradients)
+
+            optimizer.step() # Actually update the weights
+
+            total_loss += loss.item() # Add the loss to the total loss for this bathch to the epoch
+            average_reconstruction_score = reconstruction_loss.item()
+            total_kl_score = kl_loss.item()
+
+            print(f"Epoch [{epoch + 1}/{epochs}], Loss: {total_loss:.4f}, Reconstruction Loss: {average_reconstruction_score:.4f}, KL Divergence: {total_kl_score:.4f}")
+
 
 if __name__ == "__main__":
     main()
