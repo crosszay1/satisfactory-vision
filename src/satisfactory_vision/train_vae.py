@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 from torch.utils.data import Dataset, DataLoader
 
-def load_image(image_path) -> torch.Tensor:
+def load_image(image_path, dimension: tuple[int, int]) -> torch.Tensor:
     """
     Loads an image from the given path and converts it to a PyTorch tensor.
     """
@@ -20,8 +20,8 @@ def load_image(image_path) -> torch.Tensor:
     # Normalize the image to [0, 1]
     image = image.astype(np.float32) / 255.0
     
-    # Compress to 128x128 pixels
-    image = cv2.resize(image, (128, 128))
+    # Compress to the specified dimension
+    image = cv2.resize(image, dimension)
 
     # Convert to PyTorch tensor
     tensor = torch.from_numpy(image).permute(2, 0, 1)
@@ -139,7 +139,7 @@ class Dataset(Dataset):
 
     def __getitem__(self, idx): # Method to get an image in tensor form from the dataset
         image_path = self.image_paths[idx]
-        tensor = load_image(image_path)
+        tensor = load_image(image_path, dimension=(64, 64)) # Load the image and convert it to a tensor
         return tensor
 
 def main():
