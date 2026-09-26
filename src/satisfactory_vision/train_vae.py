@@ -161,7 +161,7 @@ def main():
 
     # Create a dataset from the image tensors
     dataset = Dataset(image_paths)
-    dataloader = DataLoader(dataset, batch_size=32, shuffle=True) # Inputs: Dataset (our images), batch size (num of images to process before updating weights), shuffle (randomize the order of the images)
+    dataloader = DataLoader(dataset, batch_size=128, shuffle=True, num_workers=4, pin_memory=True, persistent_workers=True) # Inputs: Dataset (our images), batch size (num of images to process before updating weights), shuffle (randomize the order of the images), num_workers (number of workers that will be loading the images), pin_memory (if True, the data loader will copy Tensors into CUDA pinned memory before returning them), persistent_workers (if True, the data loader will not shutdown the worker processes after a dataset has been consumed once)
 
     # Create an optimizer (thing the actually changes the weights)
     optimizer = torch.optim.Adam(vae.parameters(), lr=1e-3) # Learning rate = 0.001 | can shift for more/less precision.
