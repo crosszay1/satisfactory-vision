@@ -147,7 +147,7 @@ def main():
     print("Using device:", device)
 
 
-    vae = VAE(latent_dim=2, input_dim=64 * 64 * 3, hidden_dim=512) # 64x64 image with 3 channels (RGB) | Can potentially scale up, but smaller models will be better for initial training and testing
+    vae = VAE(latent_dim=2, input_dim=64 * 64 * 3, hidden_dim=512).to(device) # 64x64 image with 3 channels (RGB) | Can potentially scale up, but smaller models will be better for initial training and testing
 
     # Get all images paths
     image_paths = get_image_paths("data")
