@@ -177,7 +177,7 @@ def main():
         epoch_kl_loss = 0
 
         for batch in dataloader: # Each batch = bunch of images
-            x = batch.to(device) # Move the batch to the device (GPU or CPU)
+            x = batch.to(device, non_blocking=True) # Move the batch to the device (GPU or CPU). Use non_blocking=True to allow asynchronous data transfer for hopefully better performance
 
             optimizer.zero_grad() # Zero the gradients (reset the weights from the last batch)
 
