@@ -196,7 +196,13 @@ def main():
             epoch_reconstruction_loss += reconstruction.item()
             epoch_kl_loss += divergence.item()
 
-        print(f"Epoch [{epoch + 1}/{epochs}], Loss: {epoch_total_loss:.4f}, Reconstruction Loss: {epoch_reconstruction_loss:.4f}, KL Divergence: {epoch_kl_loss:.4f}")
+        num_batches = len(dataloader) # Get the number of batches in the dataloader
+        print(
+            f"Epoch [{epoch + 1}/{epochs}], "
+            f"Loss: {epoch_total_loss / num_batches:.4f}, "
+            f"Reconstruction Loss: {epoch_reconstruction_loss / num_batches:.4f}, "
+            f"KL Divergence: {epoch_kl_loss / num_batches:.4f}"
+            )
     # When training is done, save the model
     torch.save(vae.state_dict(), "vae_model.pt") 
 
