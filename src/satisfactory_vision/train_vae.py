@@ -156,6 +156,31 @@ def main():
     # Create a dataset from the image tensors
     dataset = Dataset(image_paths)
     dataloader = DataLoader(dataset, batch_size=32, shuffle=True) # Inputs: Dataset (our images), batch size (num of images to process before updating weights), shuffle (randomize the order of the images)
-    
+
+    # Create an optimizer (thing the actually changes the weights)
+    optimizer = torch.optim.Adam(vae.parameters(), lr=1e-3) # Learning rate = 0.001 | can shift for more/less precision.
+
+    epochs = 20 # Number of times to go through the dataset (entire dataset = 1 epoch)
+
+    for epoch in range(epochs):
+        vae.train() # Set the model to training mode
+
+        # Init vars
+        total_loss = 0
+        reconstruction_loss = 0
+        kl_loss = 0
+
+        for batch in dataloader: # Each batch = bunch of images
+            x = batch.to(device) # Move the batch to the device (GPU or CPU)
+
+            optimizer.zero_grad() # Zero the gradients (reset the weights from the last batch)
+
+            # Forward pass through the network
+            x_reconstructed, mu, log_var = vae(x) # Get the reconstructed image, mean, and log variance from the VAE
+
+            # Calculate the loss
+            loss = vae.loss_calculator(x, x_reconstructed, mu, log_var) # Calculate the loss
+
+
 if __name__ == "__main__":
     main()
