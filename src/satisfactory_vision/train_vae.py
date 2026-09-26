@@ -147,7 +147,7 @@ def main():
     print("Using device:", device)
 
 
-    vae = VAE(latent_dim=2, input_dim=128*128*3, hidden_dim=512) # 128x128 image with 3 channels (RGB)
+    vae = VAE(latent_dim=2, input_dim=64 * 64 * 3, hidden_dim=512) # 64x64 image with 3 channels (RGB) | Can potentially scale up, but smaller models will be better for initial training and testing
 
     # Get all images paths
     image_paths = get_image_paths("data")
@@ -156,5 +156,6 @@ def main():
     # Create a dataset from the image tensors
     dataset = Dataset(image_paths)
     dataloader = DataLoader(dataset, batch_size=32, shuffle=True) # Inputs: Dataset (our images), batch size (num of images to process before updating weights), shuffle (randomize the order of the images)
+    
 if __name__ == "__main__":
     main()
