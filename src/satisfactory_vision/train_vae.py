@@ -116,13 +116,19 @@ class VAE(nn.Module):
         Outputs: Mean squared error loss as a tensor
         """
         x = x.reshape(x.size(0), -1) # FLatten x first
+
         error = x - x_reconstructed # Calculate difference between the two images
+
         error_squared = error ** 2 # Square? Why square? Because 1. It makes larger errors a really big deal, and 2. It removes negative values.
+
         mse_loss = torch.mean(error_squared) # Get mean squared error loss
+
         # Get kl divergence
         divergence = self.kullback_leibler_divergence(mu, log_var) / x.numel() # Get kl divergence & normalize so this is on the same scale as the mean-reduced mse_loss above
+
         # Add kl divergence to mse loss
         total_loss = mse_loss + divergence # Add the two losses together to get the total loss
+        
         return total_loss, mse_loss, divergence
     def forward(self, x):
         mu, log_var = self.encode(x) # Encode the input tensor to get mean and log variance
