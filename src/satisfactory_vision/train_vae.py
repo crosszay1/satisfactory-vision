@@ -172,9 +172,9 @@ def main():
         vae.train() # Set the model to training mode
 
         # Init vars
-        total_loss = 0
-        reconstruction_loss = 0
-        kl_loss = 0
+        epoch_total_loss = 0
+        epoch_reconstruction_loss = 0
+        epoch_kl_loss = 0
 
         for batch in dataloader: # Each batch = bunch of images
             x = batch.to(device) # Move the batch to the device (GPU or CPU)
@@ -185,18 +185,18 @@ def main():
             x_reconstructed, mu, log_var = vae(x) # Get the reconstructed image, mean, and log variance from the VAE
 
             # Calculate the loss
-            loss = vae.loss_calculator(x, x_reconstructed, mu, log_var) # Calculate the loss
+            loss, reconstruction, divergence = vae.loss_calculator(x, x_reconstructed, mu, log_var) # Calculate the loss
 
             # Backpropagation
             loss.backward() # Backpropagate the loss (calculate the gradients)
 
             optimizer.step() # Actually update the weights
 
-            total_loss += loss.item() # Add the loss to the total loss for this bathch to the epoch
-            average_reconstruction_score = reconstruction_loss.item()
-            total_kl_score = kl_loss.item()
+            epoch_total_loss += loss.item() # Add the loss to the total loss for this bathch to the epoch
+            epoch_reconstruction_loss += reconstruction.item()
+            epoch_kl_loss += divergence.item()
 
-            print(f"Epoch [{epoch + 1}/{epochs}], Loss: {total_loss:.4f}, Reconstruction Loss: {average_reconstruction_score:.4f}, KL Divergence: {total_kl_score:.4f}")
+        print(f"Epoch [{epoch + 1}/{epochs}], Loss: {epoch_total_loss:.4f}, Reconstruction Loss: {epoch_reconstruction_loss:.4f}, KL Divergence: {epoch_kl_loss:.4f}")
 
 
 if __name__ == "__main__":
