@@ -19,6 +19,7 @@ dependencies = [
 satisfactory-vision = "satisfactory_vision:main"
 noise = "experimentation.gaussian_noise:main"
 vae = "experimentation.vae_encoder:main"
+train-vae = "satisfactory_vision.train_vae:main"
 
 [build-system]
 requires = ["uv_build>=0.12.7,<0.13.0"]

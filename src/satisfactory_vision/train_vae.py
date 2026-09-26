@@ -4,6 +4,7 @@ import torch.nn.functional as functional
 from pathlib import Path
 import cv2
 import numpy as np
+from torch.utils.data import Dataset, DataLoader
 
 def load_image(image_path) -> torch.Tensor:
     """
@@ -128,38 +129,32 @@ class VAE(nn.Module):
         z = self.reparameterize(mu, log_var) # Reparameterize to get latent variable z
         x_reconstructed = self.decode(z) # Decode z to get reconstructed tensor
         return x_reconstructed, mu, log_var
-    def train_step(self, x): # One step of training, will be called in a loop
-        """
-        Acually trains the model. 
-        """
-        x_reconstructed, mu, log_var = self.forward(x) # Forward pass
-        loss = self.loss_calculator(x, x_reconstructed, mu, log_var) # Calculate loss
 
-        """
-        Call our friend the optimizer to update the weights of the model based on the loss via gradient descent. We'll use pytorch's built in libraries for this, but conseptually the code looks something like:
-        for param in model.parameters():
-            param.data -= learning_rate * param.grad
+class Dataset(Dataset):
+    def __init__(self, image_paths: list[str]):
+        self.image_paths = image_paths
 
-        We do this so that each weight is moved against the loss, thus reducing the loss, thus making our output as close as possible to the input, which is the whole point.
-        
-        """
+    def __len__(self):
+        return len(self.image_paths)
 
+    def __getitem__(self, idx): # Method to get an image in tensor form from the dataset
+        image_path = self.image_paths[idx]
+        tensor = load_image(image_path)
+        return tensor
 
 def main():
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # Check if GPU is available, if not use CPU
+    print("Using device:", device)
+
 
     vae = VAE(latent_dim=2, input_dim=128*128*3, hidden_dim=512) # 128x128 image with 3 channels (RGB)
 
     # Get all images paths
     image_paths = get_image_paths("data")
-    print(image_paths)
-    image_tensors = []
-    for image_path in image_paths:
-        # Load the image as a tensor
-        tensor = load_image(image_path)
-        print(f"Loaded image {image_paths.index(image_path) + 1} out of {len(image_paths)} tensors from {image_path} with shape {tensor.shape}")
-        image_tensors.append(tensor)
-    print(f"Loaded {len(image_tensors)} tensors from {len(image_paths)} images")
+    #print(image_paths)
 
-    
+    # Create a dataset from the image tensors
+    dataset = Dataset(image_paths)
+    dataloader = DataLoader(dataset, batch_size=32, shuffle=True) # Inputs: Dataset (our images), batch size (num of images to process before updating weights), shuffle (randomize the order of the images)
 if __name__ == "__main__":
     main()
